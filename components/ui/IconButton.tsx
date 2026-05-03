@@ -11,10 +11,10 @@ export const IconButton = forwardRef<
       type={type}
       className={cn(
         'inline-flex h-10 w-10 items-center justify-center rounded-full',
-        'border border-white/20 bg-white/10 text-white shadow-sm backdrop-blur-md',
-        'transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/40',
+        'bg-white text-slate-700 shadow-md transition-colors',
+        'hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-300',
         'disabled:cursor-not-allowed disabled:opacity-50',
-        'dark:border-white/10 dark:bg-white/5',
+        'dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700',
         className,
       )}
       {...props}

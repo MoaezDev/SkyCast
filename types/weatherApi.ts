@@ -48,7 +48,15 @@ export interface WeatherApiHour {
   is_day: 0 | 1;
   condition: WeatherApiCondition;
   wind_kph: number;
+  wind_dir: string;
+  pressure_mb: number;
+  precip_mm: number;
   humidity: number;
+  cloud: number;
+  feelslike_c: number;
+  feelslike_f: number;
+  vis_km: number;
+  uv: number;
   chance_of_rain: number;
 }
 

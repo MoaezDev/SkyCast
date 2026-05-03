@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { useWeather } from '@/hooks/useWeather';
 import type { TemperatureUnit } from '@/types/weather';
+import { buildDayView } from '@/utils/dayView';
 import { AnimatedBackground } from '@/components/AnimatedBackground';
 import { CurrentWeather } from '@/components/CurrentWeather';
 import { DailyForecast } from '@/components/DailyForecast';
@@ -21,28 +22,54 @@ interface WeatherViewProps {
 
 export function WeatherView({ defaultLocation }: WeatherViewProps) {
   const [unit, setUnit] = useState<TemperatureUnit>('C');
-  const { coords, loading: locLoading, error: locError, request } =
-    useGeolocation({ immediate: true });
-  const { data, error, status, refetch, setQuery, query } = useWeather(
-    defaultLocation,
-  );
+  const [selectedDayIndex, setSelectedDayIndex] = useState(0);
+  const autoLocatedRef = useRef(false);
 
-  // When geolocation resolves and there is no explicit user query yet, switch
-  // to the user's coordinates.
+  const {
+    loading: locLoading,
+    error: locError,
+    request: requestLocation,
+  } = useGeolocation();
+
+  const { data, error, status, refetch, setQuery } =
+    useWeather(defaultLocation);
+
+  // Reset to "today" whenever a new location's data arrives.
   useEffect(() => {
-    if (coords && (!query || query === defaultLocation)) {
-      setQuery(`${coords.latitude},${coords.longitude}`);
-    }
-  }, [coords, query, defaultLocation, setQuery]);
+    setSelectedDayIndex(0);
+  }, [data?.location.name, data?.location.latitude, data?.location.longitude]);
 
-  const today = useMemo(() => data?.daily[0], [data]);
+  // On first mount, try to silently swap from the default city to the user's
+  // actual location. If it fails (denied/blocked), we just stay on default.
+  useEffect(() => {
+    if (autoLocatedRef.current) return;
+    autoLocatedRef.current = true;
+    void requestLocation()
+      .then((c) => setQuery(`${c.latitude},${c.longitude}`))
+      .catch(() => {
+        /* keep default location */
+      });
+  }, [requestLocation, setQuery]);
+
+  // Explicit click on the "use my location" button. Always re-requests fresh
+  // coordinates and swaps the active query.
+  const handleUseMyLocation = useCallback(async () => {
+    try {
+      const c = await requestLocation();
+      setQuery(`${c.latitude},${c.longitude}`);
+    } catch {
+      // hook state already holds the readable error message
+    }
+  }, [requestLocation, setQuery]);
+
+  const dayView = useMemo(
+    () => (data ? buildDayView(data, selectedDayIndex, unit) : null),
+    [data, selectedDayIndex, unit],
+  );
 
   return (
     <>
-      <AnimatedBackground
-        conditionCode={data?.current.condition.code}
-        isDay={data?.current.condition.isDay ?? true}
-      />
+      <AnimatedBackground />
 
       <div className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-10">
         <header className="flex items-center justify-between gap-3">
@@ -57,14 +84,16 @@ export function WeatherView({ defaultLocation }: WeatherViewProps) {
 
         <SearchBar
           onSelect={setQuery}
-          onUseMyLocation={request}
+          onUseMyLocation={handleUseMyLocation}
           loadingLocation={locLoading}
         />
 
-        {locError && !data && (
-          <p className="text-center text-xs text-white/70">
-            {locError} Showing default forecast for{' '}
-            <span className="font-medium">{defaultLocation}</span>.
+        {locError && (
+          <p
+            className="rounded-2xl bg-white/95 px-4 py-2 text-center text-xs font-medium text-amber-700 shadow-sm dark:bg-amber-500/15 dark:text-amber-200"
+            role="status"
+          >
+            {locError}
           </p>
         )}
 
@@ -97,7 +126,7 @@ export function WeatherView({ defaultLocation }: WeatherViewProps) {
               </motion.div>
             )}
 
-            {status === 'success' && data && (
+            {status === 'success' && data && dayView && (
               <motion.div
                 key={`weather-${data.location.name}-${data.current.lastUpdated}`}
                 initial={{ opacity: 0 }}
@@ -107,20 +136,30 @@ export function WeatherView({ defaultLocation }: WeatherViewProps) {
                 className="flex flex-col gap-6"
               >
                 <CurrentWeather
-                  current={data.current}
+                  current={dayView.current}
                   location={data.location}
                   unit={unit}
-                  onToggleUnit={() =>
-                    setUnit((u) => (u === 'C' ? 'F' : 'C'))
-                  }
+                  onToggleUnit={() => setUnit((u) => (u === 'C' ? 'F' : 'C'))}
+                  dateLabel={dayView.dateLabel}
+                  secondaryLine={dayView.secondaryLine}
                 />
-                <WeatherDetails current={data.current} today={today} />
+                <WeatherDetails current={dayView.current} today={dayView.day} />
                 <HourlyForecast
-                  hours={data.hourly}
+                  hours={dayView.hours}
                   unit={unit}
                   timezone={data.location.timezone}
+                  showNowPill={dayView.isToday}
+                  title={
+                    dayView.isToday ? 'Hourly Overview' : 'Hourly Forecast'
+                  }
                 />
-                <DailyForecast days={data.daily} unit={unit} />
+                <DailyForecast
+                  days={data.daily}
+                  unit={unit}
+                  location={data.location}
+                  selectedIndex={selectedDayIndex}
+                  onSelect={setSelectedDayIndex}
+                />
               </motion.div>
             )}
           </AnimatePresence>

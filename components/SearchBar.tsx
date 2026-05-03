@@ -86,7 +86,7 @@ export function SearchBar({
         <div className="relative">
           <Search
             aria-hidden
-            className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/70"
+            className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"
           />
           <input
             type="text"
@@ -99,10 +99,10 @@ export function SearchBar({
             autoComplete="off"
             spellCheck={false}
             className={cn(
-              'w-full rounded-full border border-white/20 bg-white/10 py-3 pl-12 pr-24 text-white shadow-lg backdrop-blur-md',
-              'placeholder:text-white/60',
-              'focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/30',
-              'dark:border-white/10 dark:bg-white/5',
+              'w-full rounded-full bg-white py-3 pl-12 pr-24 text-slate-900 shadow-md',
+              'placeholder:text-slate-400',
+              'focus:outline-none focus:ring-2 focus:ring-sky-300',
+              'dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500',
             )}
           />
           <div className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1">
@@ -114,7 +114,7 @@ export function SearchBar({
                   setOpen(false);
                 }}
                 aria-label="Clear search"
-                className="rounded-full p-1.5 text-white/70 transition hover:bg-white/10 hover:text-white"
+                className="rounded-full p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-700 dark:hover:text-slate-200"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -127,7 +127,7 @@ export function SearchBar({
                 title="Use my location"
                 disabled={loadingLocation}
                 className={cn(
-                  'rounded-full p-1.5 text-white/80 transition hover:bg-white/10 hover:text-white',
+                  'rounded-full p-1.5 text-sky-600 transition hover:bg-sky-50 dark:text-sky-400 dark:hover:bg-slate-700',
                   loadingLocation && 'opacity-50',
                 )}
               >
@@ -151,8 +151,8 @@ export function SearchBar({
             transition={{ duration: 0.15 }}
             role="listbox"
             className={cn(
-              'absolute left-0 right-0 top-full z-20 mt-2 max-h-80 overflow-auto rounded-2xl border border-white/20 bg-white/95 p-1 shadow-xl backdrop-blur-md',
-              'dark:border-white/10 dark:bg-slate-900/95',
+              'absolute left-0 right-0 top-full z-20 mt-2 max-h-80 overflow-auto rounded-2xl bg-white p-1 shadow-xl ring-1 ring-slate-200',
+              'dark:bg-slate-800 dark:ring-slate-700',
             )}
           >
             {loading && (
@@ -170,8 +170,8 @@ export function SearchBar({
                     onClick={() => commit(r)}
                     className={cn(
                       'flex w-full items-start gap-2 rounded-xl px-3 py-2 text-left text-sm transition',
-                      'text-slate-800 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800',
-                      active && 'bg-slate-100 dark:bg-slate-800',
+                      'text-slate-800 hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-700',
+                      active && 'bg-slate-50 dark:bg-slate-700',
                     )}
                   >
                     <MapPin

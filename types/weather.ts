@@ -49,10 +49,18 @@ export interface HourlyForecastEntry {
   time: string;
   temperatureC: number;
   temperatureF: number;
+  feelsLikeC: number;
+  feelsLikeF: number;
   condition: WeatherCondition;
   chanceOfRain: number;
   windKph: number;
+  windDirection: string;
   humidity: number;
+  pressureMb: number;
+  visibilityKm: number;
+  uv: number;
+  cloudCover: number;
+  precipitationMm: number;
 }
 
 export interface DailyForecastEntry {
