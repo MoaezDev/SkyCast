@@ -19,7 +19,9 @@ interface UseWeatherResult {
  * Fetches and caches weather data for the active query. The query can be a
  * city name (`"London"`) or a "lat,lon" pair (`"51.5,-0.12"`).
  */
-export function useWeather(initialQuery: string | null = null): UseWeatherResult {
+export function useWeather(
+  initialQuery: string | null = null,
+): UseWeatherResult {
   const [query, setQuery] = useState<string | null>(initialQuery);
   const [data, setData] = useState<WeatherData | null>(null);
   const [error, setError] = useState<string | null>(null);

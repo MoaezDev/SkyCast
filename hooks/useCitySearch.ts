@@ -2,10 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from '@/hooks/useDebounce';
-import {
-  searchLocations,
-  WeatherClientError,
-} from '@/services/weatherClient';
+import { searchLocations, WeatherClientError } from '@/services/weatherClient';
 import type { WeatherApiSearchResult } from '@/types/weatherApi';
 
 interface UseCitySearchResult {

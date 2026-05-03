@@ -16,8 +16,7 @@ export async function GET(req: Request) {
     const results = await searchCities(q);
     return NextResponse.json(results, {
       headers: {
-        'Cache-Control':
-          's-maxage=600, stale-while-revalidate=3600, public',
+        'Cache-Control': 's-maxage=600, stale-while-revalidate=3600, public',
       },
     });
   } catch (err) {

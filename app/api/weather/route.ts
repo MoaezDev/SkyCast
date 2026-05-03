@@ -22,8 +22,7 @@ export async function GET(req: Request) {
     return NextResponse.json(data, {
       headers: {
         // Cache at the edge for 5 minutes; allow stale-while-revalidate for 30m.
-        'Cache-Control':
-          's-maxage=300, stale-while-revalidate=1800, public',
+        'Cache-Control': 's-maxage=300, stale-while-revalidate=1800, public',
       },
     });
   } catch (err) {
