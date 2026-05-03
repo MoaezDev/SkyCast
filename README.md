@@ -15,16 +15,16 @@ A clean, production-ready weather application built with **Next.js (App Router)*
 
 ## Tech Stack
 
-| Concern        | Library                          |
-| -------------- | -------------------------------- |
-| Framework      | Next.js 15 (App Router)          |
-| Language       | TypeScript 5                     |
-| Styling        | Tailwind CSS 3                   |
-| Animation      | Framer Motion                    |
-| Icons          | lucide-react                     |
-| HTTP           | axios (server) / fetch (client)  |
-| Theming        | next-themes                      |
-| Code quality   | ESLint, Prettier, Husky, lint-staged |
+| Concern      | Library                              |
+| ------------ | ------------------------------------ |
+| Framework    | Next.js 15 (App Router)              |
+| Language     | TypeScript 5                         |
+| Styling      | Tailwind CSS 3                       |
+| Animation    | Framer Motion                        |
+| Icons        | lucide-react                         |
+| HTTP         | axios (server) / fetch (client)      |
+| Theming      | next-themes                          |
+| Code quality | ESLint, Prettier, Husky, lint-staged |
 
 ## Getting Started
 
