@@ -22,20 +22,24 @@ export function ErrorMessage({
       transition={{ duration: 0.25 }}
       role="alert"
     >
-      <Card className="flex flex-col items-center gap-3 text-center text-white">
+      <Card className="flex flex-col items-center gap-3 text-center">
         <div
           aria-hidden
-          className="grid h-12 w-12 place-items-center rounded-full bg-red-500/20 text-red-200"
+          className="grid h-12 w-12 place-items-center rounded-full bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-300"
         >
           <AlertTriangle className="h-6 w-6" />
         </div>
-        <h2 className="text-lg font-semibold">{title}</h2>
-        <p className="max-w-md text-sm text-white/80">{message}</p>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+          {title}
+        </h2>
+        <p className="max-w-md text-sm text-slate-600 dark:text-slate-400">
+          {message}
+        </p>
         {onRetry && (
           <button
             type="button"
             onClick={onRetry}
-            className="mt-2 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-medium transition hover:bg-white/20"
+            className="mt-2 inline-flex items-center gap-2 rounded-full bg-sky-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-sky-600"
           >
             <RefreshCw className="h-4 w-4" /> Try again
           </button>

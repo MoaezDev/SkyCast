@@ -75,10 +75,18 @@ function mapHour(h: WeatherApiHour): HourlyForecastEntry {
     time: h.time,
     temperatureC: h.temp_c,
     temperatureF: h.temp_f,
+    feelsLikeC: h.feelslike_c,
+    feelsLikeF: h.feelslike_f,
     condition: mapCondition(h.condition, h.is_day === 1),
     chanceOfRain: h.chance_of_rain,
     windKph: h.wind_kph,
+    windDirection: h.wind_dir,
     humidity: h.humidity,
+    pressureMb: h.pressure_mb,
+    visibilityKm: h.vis_km,
+    uv: h.uv,
+    cloudCover: h.cloud,
+    precipitationMm: h.precip_mm,
   };
 }
 
